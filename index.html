@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Wedding RSVP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  background: #f6f2ee;
+  font-family: Georgia, serif;
+  padding: 20px;
+}
+
+.card {
+  max-width: 420px;
+  margin: auto;
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+
+header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+header h1 {
+  margin: 0;
+  color: #9b7b4f;
+}
+
+header p {
+  font-size: 14px;
+  color: #666;
+}
+
+label {
+  display: block;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-family: inherit;
+}
+
+textarea {
+  resize: none;
+}
+
+button {
+  width: 100%;
+  margin-top: 25px;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #c59d5f;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #b08a4f;
+}
+
+#guestBox {
+  display: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <header>
+    <h1>RSVP</h1>
+    <p>We can’t wait to celebrate with you 💐</p>
+  </header>
+
+  <form id="rsvpForm">
+
+    <label>Full Name *</label>
+    <input type="text" name="name" required>
+
+    <label>Phone Number</label>
+    <input type="tel" name="phone">
+
+    <label>Will you attend? *</label>
+    <select name="attending" id="attending" required>
+      <option value="">Please select</option>
+      <option value="Yes">Yes, I will attend</option>
+      <option value="No">Sorry, I can’t attend</option>
+    </select>
+
+    <div id="guestBox">
+      <label>Number of Guests</label>
+      <input type="number" name="guests" min="1">
+    </div>
+
+    <label>Message (optional)</label>
+    <textarea name="message" rows="3"></textarea>
+
+    <button type="submit">Submit RSVP</button>
+
+  </form>
+</div>
+
+<script>
+const attending = document.getElementById("attending");
+const guestBox = document.getElementById("guestBox");
+
+attending.addEventListener("change", () => {
+  guestBox.style.display = attending.value === "Yes" ? "block" : "none";
+});
+
+document.getElementById("rsvpForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const data = Object.fromEntries(new FormData(e.target).entries());
+
+  fetch("PASTE_YOUR_GOOGLE_SCRIPT_URL", {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(() => {
+    alert("Thank you for your RSVP 💖");
+    e.target.reset();
+    guestBox.style.display = "none";
+  })
+  .catch(() => alert("Submission failed. Please try again."));
+});
+</script>
+
+</body>
+</html>
